@@ -1,4 +1,11 @@
+# Task: Labyrinth
+# Link: https://cses.fi/problemset/task/1194
+# Topic: Graph Algorithms / BFS Shortest Path & Backtracking
+# Complexity: O(N * M) time, O(N * M) auxiliary space
+
 import sys
+from collections import deque
+
 
 def solve():
     input = sys.stdin.readline
@@ -10,65 +17,61 @@ def solve():
         line = sys.stdin.readline().strip()
         grid.append(line)
         j = 0
-        while (start== -1) and j < len(line):
+        while (start == -1) and j < len(line):
             if line[j] == 'A':
                 start = (i, j)
-            j+=1
-        i+=1
+            j += 1
+        i += 1
 
-    visited = [[False] * width for _ in range(height)]
-    pred = [[0] * width for _ in range(height)]
-    bfs(start[0], start[1], visited, pred, grid, height, width)
+    pred = [[None] * width for _ in range(height)]
+    bfs(start[0], start[1], pred, grid, height, width)
 
-from collections import deque
 
-def bfs(start_i, start_j, visited, pred, grid, height, width):
+def bfs(start_i, start_j, pred, grid, height, width):
     queue = deque([(start_i, start_j)])
-    path = [(start_i, start_j)]
-    visited[start_i][start_j] = True
     pred[start_i][start_j] = 'A'
     end = (-1, -1)
     stop = False
-    description = ""
+
     while queue and not stop:
         r, c = queue.popleft()
 
-        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        for dr, dc, move in [(-1, 0, 'U'), (1, 0, 'D'), (0, -1, 'L'), (0, 1, 'R')]:
             nr, nc = r + dr, c + dc
             if 0 <= nr < height and 0 <= nc < width:
-                if not visited[nr][nc] and (grid[nr][nc] == '.' or grid[nr][nc] == 'B'):
-                    if (dr, dc) == (-1, 0):
-                        description = "U"
-                    elif (dr, dc) == (1, 0):
-                        description = "D"
-                    elif (dr, dc) == (0, -1):
-                        description = "L"
-                    elif (dr, dc) == (0, 1):
-                        description = "R"
-                    visited[nr][nc] = True
-                    pred[nr][nc] = (r, c, description)
+
+                if pred[nr][nc] is None and (grid[nr][nc] == '.' or grid[nr][nc] == 'B'):
+                    pred[nr][nc] = move
                     queue.append((nr, nc))
-                    path.append((nr, nc))
+
                     if grid[nr][nc] == 'B':
                         end = (nr, nc)
                         stop = True
+                        break
+
     if stop:
         track_path(end, pred)
     else:
         print("NO")
 
+
 def track_path(end, pred):
-    i = end[0]
-    j = end[1]
+    i, j = end
     path = []
+    step_back = {'U': (1, 0), 'D': (-1, 0), 'L': (0, 1), 'R': (0, -1)}
     while pred[i][j] != 'A':
-        i, j, description = pred[i][j]
-        path.append(description)
+        move = pred[i][j]
+        path.append(move)
+        di, dj = step_back[move]
+        i += di
+        j += dj
+
     path.reverse()
 
     print("YES")
     print(len(path))
-    print(*path, sep='')
+    print("".join(path))
+
 
 if __name__ == '__main__':
     solve()
