@@ -25,14 +25,17 @@ def dijkstra(g, starting_node, dist, pred):
     while len(live_dist) != 0:
         current_weight, node = heapq.heappop(live_dist)
         node = node - 1
+
+        if current_weight > dist[node]:
+            continue
+
         for neighbor, weight in g[node]:
             if dist[neighbor-1] == -1 or dist[node] + weight < dist[neighbor-1]:
                 dist[neighbor-1] = dist[node] + weight
                 pred[neighbor-1] = node
                 heapq.heappush(live_dist, (dist[neighbor - 1], neighbor))
 
-    for d in dist:
-        print(d, end=" ")
+    print(*dist)
 
 if __name__ == '__main__':
     solve()
