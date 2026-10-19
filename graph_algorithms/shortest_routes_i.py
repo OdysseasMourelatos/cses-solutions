@@ -1,3 +1,8 @@
+# Task: Shortest Routes I
+# Link: https://cses.fi/problemset/task/1671
+# Topic: Graph Algorithms / Dijkstra's Algorithm (Single-Source Shortest Path)
+# Complexity: O((V + E) log V) time, O(V + E) auxiliary space
+
 import sys
 import heapq
 

@@ -5,19 +5,25 @@
 
 import sys
 
+
 def solve():
     input = sys.stdin.readline
-    coins, sum = map(int, input().split())
-    values = list(map(int, sys.stdin.readline().split()))
-    dp = [0 for _ in range(sum + 1)]
-    dp[0] = 1
-    min_value = min(values)
-    for i in range(min_value, sum + 1):
-        for j in values:
-            if i - j >= 0:
-                dp[i] = (dp[i] + dp[i - j]) % (10 ** 9 + 7)
+    coins, total_sum = map(int, input().split())
+    values = sorted(map(int, input().split()))
 
-    print(dp[sum])
+    dp = [0] * (total_sum + 1)
+    dp[0] = 1
+
+    for i in range(values[0], total_sum + 1):
+        s = 0
+        for j in values:
+            if j > i:
+                break
+            s += dp[i - j] % (10 ** 9 + 7)
+        dp[i] = s % (10 ** 9 + 7)
+
+    print(dp[total_sum])
+
 
 if __name__ == '__main__':
     solve()
