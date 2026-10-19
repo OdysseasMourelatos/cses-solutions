@@ -1,7 +1,14 @@
+/*
+ * Task: Coin Combinations II
+ * Link: https://cses.fi/problemset/task/1636
+ * Topic: Dynamic Programming / 1D DP (Combinations / Unordered)
+ * Complexity: O(N * X) time, O(X) auxiliary space
+ */
+
 import java.io.*;
 import java.util.*;
 
-public class CoinCombinations {
+public class CoinCombinationsII {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,19 +25,14 @@ public class CoinCombinations {
 
         Arrays.sort(coins);
 
-        int[][] sol = new int[target + 1]
         int[] dp = new int[target + 1];
         dp[0] = 1;
         int MOD = 1000000007;
 
-        for (int i = coins[0]; i <= target; i++) {
-            long s = 0;
-            for (int c : coins) {
-                if (c > i) break;
-                s += dp[i - c];
-                sol[i] = 
+        for (int c : coins) {
+            for (int i = c; i <= target; i++) {
+                dp[i] = (dp[i] + dp[i - c]) % MOD;
             }
-            dp[i] = (int)(s % MOD);
         }
         System.out.println(dp[target]);
     }
