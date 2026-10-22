@@ -32,37 +32,28 @@ def solve():
 
     binary_search_on_answer(costs, packages, budget)
 
+
 def binary_search_on_answer(costs, packages, budget):
     low = 0
     high = packages
-    max_packages = None
-    min_cost = None
+    max_packages = 0
+    min_cost = 0
 
     while low <= high:
         packages_wanted = (low + high) // 2
 
-        packages_costs = []
-        for c in costs:
-            package_cost = c[0] + packages_wanted * c[1]
-            packages_costs.append(package_cost)
+        packages_costs = [a + packages_wanted * b for a, b in costs]
+
         packages_costs.sort()
 
-        current_cost = 0
-        packages_picked = 0
+        current_cost = sum(packages_costs[:packages_wanted])
 
-        for c in packages_costs:
-            if c + current_cost <= budget:
-                current_cost += c
-                packages_picked += 1
-                if packages_picked == packages_wanted:
-                    break
-
-        if packages_wanted > packages_picked:
-            high = packages_wanted - 1
-        else:
-            max_packages = packages_picked
+        if current_cost <= budget:
+            max_packages = packages_wanted
             min_cost = current_cost
             low = packages_wanted + 1
+        else:
+            high = packages_wanted - 1
 
     print(max_packages, min_cost)
 
