@@ -2,6 +2,6 @@ __pycache__/
 *.pyc
 .idea/
 .vscode
-.class
+*.class
 input.txt
 output.txt

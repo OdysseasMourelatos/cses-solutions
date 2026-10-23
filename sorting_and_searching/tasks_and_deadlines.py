@@ -12,8 +12,8 @@ Strategy: Maximize sum(d_i - f_i) = sum(d_i) - sum(f_i).
 import os
 import sys
 
-if os.path.exists('input.txt'):
-  sys.stdin = open('input.txt', 'r')
+if os.path.exists('../cses_previous_exams/input.txt'):
+  sys.stdin = open('../cses_previous_exams/input.txt', 'r')
 
 def solve():
     data = sys.stdin.buffer.read().split()
